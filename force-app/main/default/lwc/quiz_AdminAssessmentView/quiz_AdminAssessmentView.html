@@ -1,0 +1,225 @@
+<template>
+    <div>
+        <template lwc:if={error}><div style="color: red; font-size: 22px;"><b>Error: {error}</b></div></template>
+        <template lwc:if={adminAssessmentViewFlag}>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" padding="around-small">
+                    <lightning-card  title={userpayload.greetUser}>
+                        <p style="padding-left: 17px; font-size: 16px;"><b>Assessment Name: {assessmentpayload.assessmentName}</b></p>
+                        <p style="padding-left: 17px; font-size: 10px;"><b>Total Question: {assessmentpayload.totalQuestion}</b></p>
+                        <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                        <lightning-button variant="brand" label="Create Session" title="startsession" onclick={clickStartSession} class="slds-m-left_x-small"></lightning-button>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                        <lightning-button variant="brand" label="View Result" title="viewresult" onclick={clickViewResult} class="slds-m-left_x-small"></lightning-button>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                        <lightning-button variant="brand" label="Add Question" title="addquestion" onclick={clickAddQuestion} class="slds-m-left_x-small"></lightning-button>
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </div>
+                    </lightning-card>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" padding="around-small">
+                    <template for:each={assessmentpayload.questionList} for:item="item">
+                        <lightning-card key={item.quesId}>
+                            <lightning-button-icon class="slds-m-right_x-small" slot="actions" icon-name="utility:edit" variant="border-filled" data-quesid={item.quesId} alternative-text="Edit Question" onclick={handleEdit}></lightning-button-icon>
+                            <lightning-button-icon slot="actions" icon-name="utility:delete" variant="border-filled" data-quesid={item.quesId} alternative-text="Delete Question" onclick={handleDelete}></lightning-button-icon>
+                            <p style="padding-left: 17px; font-size: 16px;"><b>Q{item.quesIndex}: </b>{item.questionName}</p>
+                            <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                                <lightning-layout multiple-rows>
+                                    <template for:each={item.answerList} for:item="data">
+                                        <lightning-layout-item size="12" padding="around-small" key={data.answerId}>
+                                            <div class="custom-box slds-box slds-p-around_small">
+                                                <div style="width: 90%; display: inline-block; font-size: 15px;"><b>{data.answerIndex}</b> {data.answerName}</div>
+                                                <div style="width: 10%; display: inline-block; padding-left: 10px;"><lightning-input type="checkbox" disabled=true checked={data.isTrue} label="" name="anscheck1" onchange={check1Change}></lightning-input></div>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
+                                </lightning-layout>
+                            </div>
+                        </lightning-card>
+                        <div key={item.quesId}>
+                            <br/>
+                        </div>
+                    </template>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+    </div>
+
+    <!-- Active Session View -->  
+    <template lwc:if={adminSessionViewFlag}>
+        <c-quiz_-admin-session-view userpayload={userpayload} assessmentid={assessmentid} createdsessionid={createdsessionid} assessmentpayload={assessmentpayload}></c-quiz_-admin-session-view>
+    </template>
+
+    <!-- Session Result View -->  
+    <template lwc:if={adminSessionResultFlag}>
+        <c-quiz_-admin-session-result-view studenthideflag={studenthideflag} createdsessionid={createdsessionid} userpayload={userpayload} assessmentpayload={assessmentpayload}></c-quiz_-admin-session-result-view>
+    </template>
+
+    <!-- modal start(Session Ceate) -->      
+    <template if:true={isShowModalSessionCreate}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBoxSessionCreate}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Create Session</h2>
+            </header>
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                <p class="slds-p-horizontal_small">
+                    <lightning-input type="text" label="" placeholder="Enter Session Name" onchange={sessionNameChange}></lightning-input>
+                    <lightning-input type="Number" label="" placeholder="Enter Quiz Time in Minutes" onchange={sessionTimeChange}></lightning-input>
+                </p>
+            </div>
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={createSession}>Create</button>
+            </footer>
+            <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+
+    <!-- modal start(Session Details) -->      
+    <template if:true={fetchSessionDetailsFlag}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBoxSessionDetails}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Session Result</h2>
+            </header>
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                <lightning-card  title="Joinee Details:">
+                    <div class="slds-box slds-theme–default">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                                <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        S.no
+                                    </th>
+                                    <th class="" scope="col">
+                                        Session Name
+                                    </th>
+                                    <th class="" scope="col">
+                                        Created Date
+                                    </th>
+                                    <th class="" scope="col">
+                                        Total Student
+                                    </th>
+                                    <th class="" scope="col">
+                                        Session Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={allsessiondata} for:item="item">
+                                    <tr class="slds-hint-parent" key={item.sessionId}>
+                                        <td data-label="indexNo">
+                                            <div class="slds-cell-wrap">{item.indexNo}</div>
+                                        </td>
+                                        <td data-label="Name">
+                                            <a><div class="slds-cell-wrap" data-sessionid={item.sessionId} data-sessionstatus={item.sessionStatus} onclick={sessionNameClick}>{item.sessionName}</div></a>
+                                        </td>
+                                        <td data-label= "CreatedDate">
+                                            <div class="slds-cell-wrap">{item.sessionCreatedDate}</div>
+                                        </td>
+                                        <td data-label= "TotalStudent">
+                                            <div class="slds-cell-wrap">{item.sessionTotalStudent}</div>
+                                        </td>
+                                        <td data-label= "status">
+                                            <div class="slds-cell-wrap">{item.sessionStatus}</div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </lightning-card>
+            </div>
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={hideModalBoxSessionDetails}>Close</button>
+            </footer>
+            <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+
+    <!-- modal start(Question Add) -->      
+    <template if:true={isShowModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Question Details</h2>
+            </header>
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <p class="slds-p-horizontal_small">
+                    <lightning-textarea name="question" required value={questionPayload.questionName} data-quesid={questionPayload.quesId} placeholder="Type Your Question..." label="Type Your Question" onchange={questionChange} maxlength="5000" message-when-too-long="A maximum of 5000 characters are allowed" message-when-value-missing="An empty question cannot be posted." ></lightning-textarea>
+                </p>
+                <div style="width: 90%; display: inline-block;"><lightning-input type="text" name="ans1" value={questionPayload.answerName1} data-ansid={questionPayload.answerId1} placeholder="Type Your Answer" label="" onchange={answer1Change}></lightning-input></div>
+                <div style="width: 10%; display: inline-block; padding-left: 10px;"><lightning-input type="checkbox" label="" name="anscheck1" checked={questionPayload.isTrue1} data-ansid={questionPayload.answerId1} onchange={check1Change}></lightning-input></div>
+                <div style="width: 90%; display: inline-block;"><lightning-input type="text" name="ans2" value={questionPayload.answerName2} data-ansid={questionPayload.answerId2} placeholder="Type Your Answer" label="" onchange={answer2Change}></lightning-input></div>
+                <div style="width: 10%; display: inline-block; padding-left: 10px;"><lightning-input type="checkbox" label="" name="anscheck2" checked={questionPayload.isTrue2} data-ansid={questionPayload.answerId2} onchange={check2Change}></lightning-input></div>
+                <div style="width: 90%; display: inline-block;"><lightning-input type="text" name="ans3" value={questionPayload.answerName3} data-ansid={questionPayload.answerId3} placeholder="Type Your Answer" label="" onchange={answer3Change}></lightning-input></div>
+                <div style="width: 10%; display: inline-block; padding-left: 10px;"><lightning-input type="checkbox" label="" name="anscheck3" checked={questionPayload.isTrue3} data-ansid={questionPayload.answerId3} onchange={check3Change}></lightning-input></div>
+                <div style="width: 90%; display: inline-block;"><lightning-input type="text" name="ans4" value={questionPayload.answerName4} data-ansid={questionPayload.answerId4} placeholder="Type Your Answer" label="" onchange={answer4Change}></lightning-input></div>
+                <div style="width: 10%; display: inline-block; padding-left: 10px;"><lightning-input type="checkbox" label="" name="anscheck4" checked={questionPayload.isTrue4} data-ansid={questionPayload.answerId4} onchange={check4Change}></lightning-input></div>
+                <div style="width: 90%; display: inline-block;"><lightning-input type="text" name="ans5" value={questionPayload.answerName5} data-ansid={questionPayload.answerId5} placeholder="Type Your Answer" label="" onchange={answer5Change}></lightning-input></div>
+                <div style="width: 10%; display: inline-block; padding-left: 10px;"><lightning-input type="checkbox" label="" name="anscheck5" checked={questionPayload.isTrue5} data-ansid={questionPayload.answerId5} onchange={check5Change}></lightning-input></div>
+                <div style="width: 90%; display: inline-block;"><lightning-input type="text" name="ans6" value={questionPayload.answerName6} data-ansid={questionPayload.answerId6} placeholder="Type Your Answer" label="" onchange={answer6Change}></lightning-input></div>
+                <div style="width: 10%; display: inline-block; padding-left: 10px;"><lightning-input type="checkbox" label="" name="anscheck6" checked={questionPayload.isTrue6} data-ansid={questionPayload.answerId6} onchange={check6Change}></lightning-input></div>
+            </div>
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={createQuestion}>Submit</button>
+            </footer>
+            <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+
+    <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+</template>

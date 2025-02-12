@@ -1,0 +1,26 @@
+.question-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.answer-option {
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    background: #f7f9fc;
+    border: 1px solid #dfe3e8;
+}
+
+.answer-option:hover {
+    background: #e3e8ee;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.answer-text {
+    font-size: 16px;
+    color: #444;
+}
+
+.input-checkbox, .input-radio {
+    transform: scale(1.2);
+}
