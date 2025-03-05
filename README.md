@@ -70,7 +70,22 @@ xml--->
 </Package>
 
 ## Configure Your Salesforce DX Project
-after installation:
+After Deploy via **VS Code**:
+1. Go to System Admin profile and give access for "Quiz (Quiz)" under 'Assigned Apps' section.
+2. Go to System Admin profile and give all access to all the custom objects related to the Quiz app. And Tab Visibility should be default on.
+3. Go to System Admin profile and give all related apex class access
+4. Enable Digital Experiences if not enabled.
+5. create a guest site 
+	a. go to "All Sites" and click on new.
+	b. select "Build Your Own(LWR)"
+	c. click on "Get Started"
+	d. put site name(Quiz Application) and click on create
+	e. Now go to Builder and add Quiz_Landing_Page only
+	f. Enable public access from the setting
+	g. click Publish
+6. Give all apex class access for guest user profile.
+
+After installation via **installation URL**:
 1. Enable Digital Experiences if not enabled.
 2. create a guest site 
 	a. go to "all site" and click on new.
@@ -78,7 +93,7 @@ after installation:
 	c. click on "Get Started"
 	d. put site name(Quiz Application) and click on create
 	e. Now go to Builder and add Quiz_Landing_Page only
-	f. Enable public access from setting
+	f. Enable public access from the setting
 	g. click Publish
 3. Give all apex class access for guest user profile.
 	
