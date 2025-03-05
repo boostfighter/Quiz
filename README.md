@@ -49,10 +49,6 @@ xml--->
 		<name>FlexiPage</name>
 	</types>
 	<types>
-		<members>*</members>
-		<name>LightningComponentBundle</name>
-	</types>
-	<types>
 		<members>companyLogo</members>
 		<name>StaticResource</name>
 	</types>
