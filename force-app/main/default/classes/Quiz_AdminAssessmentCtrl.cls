@@ -67,7 +67,7 @@ public without sharing class Quiz_AdminAssessmentCtrl {
         Integer questionIndex = 1;
 
         questionList = [SELECT Id, Question__c, Quiz_Assessment_Name__c, isMultiAnswer__c FROM Quiz_Question__c WHERE Quiz_Assessment_Name__c=:assessmentId ORDER BY CreatedDate ASC];
-        answerList = [SELECT Id, Answer__c, isTrue__c, Quiz_Question__c, Index__c FROM Quiz_Answer__c WHERE Quiz_Question__c in:questionList];
+        answerList = [SELECT Id, Answer__c, isTrue__c, Quiz_Question__c, Index__c FROM Quiz_Answer__c WHERE Quiz_Question__c in:questionList ORDER BY Index__c];
         for(Quiz_Answer__c ans : answerList){
             if(!questionAnswerMap.containsKey(ans.Quiz_Question__c)){
                 questionAnswerMap.put(ans.Quiz_Question__c, new List<WrapperAnswer>());
@@ -126,90 +126,148 @@ public without sharing class Quiz_AdminAssessmentCtrl {
         WrapperQuestionDetails questionPayload = (WrapperQuestionDetails)JSON.deserialize(questionPayloadParam, WrapperQuestionDetails.class);
         system.debug('questionPayload->'+questionPayload);
 
-        if(questionPayload.quesId == null){
-            Quiz_Question__c ques = new Quiz_Question__c();
-            List<Quiz_Answer__c> ansList = new List<Quiz_Answer__c>();
-            Integer trueCount = 0;
+        Quiz_Question__c ques = new Quiz_Question__c();
+        if(questionPayload.quesId != null && questionPayload.quesId != ''){
+            ques.Id = questionPayload.quesId;
+        }
+        List<Quiz_Answer__c> ansList = new List<Quiz_Answer__c>();
+        Integer trueCount = 0;
 
-            if(questionPayload.isTrue1 != null && questionPayload.isTrue1){
-                trueCount = trueCount + 1;
-            }
-            if(questionPayload.isTrue2 != null && questionPayload.isTrue2){
-                trueCount = trueCount + 1;
-            }
-            if(questionPayload.isTrue3 != null && questionPayload.isTrue3){
-                trueCount = trueCount + 1;
-            }
-            if(questionPayload.isTrue4 != null && questionPayload.isTrue4){
-                trueCount = trueCount + 1;
-            }
-            if(questionPayload.isTrue5 != null && questionPayload.isTrue5){
-                trueCount = trueCount + 1;
-            }
-            if(questionPayload.isTrue6 != null && questionPayload.isTrue6){
-                trueCount = trueCount + 1;
-            }
+        if(questionPayload.isTrue1 != null && questionPayload.isTrue1){
+            trueCount = trueCount + 1;
+        }
+        if(questionPayload.isTrue2 != null && questionPayload.isTrue2){
+            trueCount = trueCount + 1;
+        }
+        if(questionPayload.isTrue3 != null && questionPayload.isTrue3){
+            trueCount = trueCount + 1;
+        }
+        if(questionPayload.isTrue4 != null && questionPayload.isTrue4){
+            trueCount = trueCount + 1;
+        }
+        if(questionPayload.isTrue5 != null && questionPayload.isTrue5){
+            trueCount = trueCount + 1;
+        }
+        if(questionPayload.isTrue6 != null && questionPayload.isTrue6){
+            trueCount = trueCount + 1;
+        }
 
-            ques.Question__c = questionPayload.questionName;
-            ques.Quiz_Assessment_Name__c = assessmentId;
-            ques.isMultiAnswer__c = trueCount > 1 ? true : false;
+        ques.Question__c = questionPayload.questionName;
+        ques.Quiz_Assessment_Name__c = assessmentId;
+        ques.isMultiAnswer__c = trueCount > 1 ? true : false;
 
-            insert ques;
+        upsert ques;
 
-            if(questionPayload.answerName1 != null && !String.isBlank(questionPayload.answerName1)){
-                Quiz_Answer__c ans = new Quiz_Answer__c();
-                ans.Index__c = 'a';
-                ans.Answer__c = questionPayload.answerName1;
-                ans.isTrue__c = questionPayload.isTrue1 == null ? false : questionPayload.isTrue1;
-                ans.Quiz_Question__c = ques.Id;
-                ansList.add(ans);
+        if(questionPayload.answerName1 != null && !String.isBlank(questionPayload.answerName1)){
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId1 != null && questionPayload.answerId1 != ''){
+                ans.Id = questionPayload.answerId1;
             }
-            if(questionPayload.answerName2 != null && !String.isBlank(questionPayload.answerName2)){
-                Quiz_Answer__c ans = new Quiz_Answer__c();
-                ans.Index__c = 'b';
-                ans.Answer__c = questionPayload.answerName2;
-                ans.isTrue__c = questionPayload.isTrue2 == null ? false : questionPayload.isTrue2;
-                ans.Quiz_Question__c = ques.Id;
-                ansList.add(ans);
-            }
-            if(questionPayload.answerName3 != null && !String.isBlank(questionPayload.answerName3)){
-                Quiz_Answer__c ans = new Quiz_Answer__c();
-                ans.Index__c = 'c';
-                ans.Answer__c = questionPayload.answerName3;
-                ans.isTrue__c = questionPayload.isTrue3 == null ? false : questionPayload.isTrue3;
-                ans.Quiz_Question__c = ques.Id;
-                ansList.add(ans);
-            }
-            if(questionPayload.answerName4 != null && !String.isBlank(questionPayload.answerName4)){
-                Quiz_Answer__c ans = new Quiz_Answer__c();
-                ans.Index__c = 'd';
-                ans.Answer__c = questionPayload.answerName4;
-                ans.isTrue__c = questionPayload.isTrue4 == null ? false : questionPayload.isTrue4;
-                ans.Quiz_Question__c = ques.Id;
-                ansList.add(ans);
-            }
-            if(questionPayload.answerName5 != null && !String.isBlank(questionPayload.answerName5)){
-                Quiz_Answer__c ans = new Quiz_Answer__c();
-                ans.Index__c = 'e';
-                ans.Answer__c = questionPayload.answerName5;
-                ans.isTrue__c = questionPayload.isTrue5 == null ? false : questionPayload.isTrue5;
-                ans.Quiz_Question__c = ques.Id;
-                ansList.add(ans);
-            }
-            if(questionPayload.answerName6 != null && !String.isBlank(questionPayload.answerName6)){
-                Quiz_Answer__c ans = new Quiz_Answer__c();
-                ans.Index__c = 'f';
-                ans.Answer__c = questionPayload.answerName6;
-                ans.isTrue__c = questionPayload.isTrue6 == null ? false : questionPayload.isTrue6;
-                ans.Quiz_Question__c = ques.Id;
-                ansList.add(ans);
-            }
-
-            insert ansList;
+            ans.Index__c = 'a';
+            ans.Answer__c = questionPayload.answerName1;
+            ans.isTrue__c = questionPayload.isTrue1 == null ? false : questionPayload.isTrue1;
+            ans.Quiz_Question__c = ques.Id;
+            ansList.add(ans);
         }
         else{
-            system.debug('questionPayload.quesId--->'+questionPayload.quesId);
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId1 != null && questionPayload.answerId1 != ''){
+                ans.Id = questionPayload.answerId1;
+                delete ans;
+            }
         }
+        if(questionPayload.answerName2 != null && !String.isBlank(questionPayload.answerName2)){
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId2 != null && questionPayload.answerId2 != ''){
+                ans.Id = questionPayload.answerId2;
+            }
+            ans.Index__c = 'b';
+            ans.Answer__c = questionPayload.answerName2;
+            ans.isTrue__c = questionPayload.isTrue2 == null ? false : questionPayload.isTrue2;
+            ans.Quiz_Question__c = ques.Id;
+            ansList.add(ans);
+        }
+        else{
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId2 != null && questionPayload.answerId2 != ''){
+                ans.Id = questionPayload.answerId2;
+                delete ans;
+            }
+        }
+        if(questionPayload.answerName3 != null && !String.isBlank(questionPayload.answerName3)){
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId3 != null && questionPayload.answerId3 != ''){
+                ans.Id = questionPayload.answerId3;
+            }
+            ans.Index__c = 'c';
+            ans.Answer__c = questionPayload.answerName3;
+            ans.isTrue__c = questionPayload.isTrue3 == null ? false : questionPayload.isTrue3;
+            ans.Quiz_Question__c = ques.Id;
+            ansList.add(ans);
+        }
+        else{
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId3 != null && questionPayload.answerId3 != ''){
+                ans.Id = questionPayload.answerId3;
+                delete ans;
+            }
+        }
+        if(questionPayload.answerName4 != null && !String.isBlank(questionPayload.answerName4)){
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId4 != null && questionPayload.answerId4 != ''){
+                ans.Id = questionPayload.answerId4;
+            }
+            ans.Index__c = 'd';
+            ans.Answer__c = questionPayload.answerName4;
+            ans.isTrue__c = questionPayload.isTrue4 == null ? false : questionPayload.isTrue4;
+            ans.Quiz_Question__c = ques.Id;
+            ansList.add(ans);
+        }
+        else{
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId4 != null && questionPayload.answerId4 != ''){
+                ans.Id = questionPayload.answerId4;
+                delete ans;
+            }
+        }
+        if(questionPayload.answerName5 != null && !String.isBlank(questionPayload.answerName5)){
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId5 != null && questionPayload.answerId5 != ''){
+                ans.Id = questionPayload.answerId5;
+            }
+            ans.Index__c = 'e';
+            ans.Answer__c = questionPayload.answerName5;
+            ans.isTrue__c = questionPayload.isTrue5 == null ? false : questionPayload.isTrue5;
+            ans.Quiz_Question__c = ques.Id;
+            ansList.add(ans);
+        }
+        else{
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId5 != null && questionPayload.answerId5 != ''){
+                ans.Id = questionPayload.answerId5;
+                delete ans;
+            }
+        }
+        if(questionPayload.answerName6 != null && !String.isBlank(questionPayload.answerName6)){
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId6 != null && questionPayload.answerId6 != ''){
+                ans.Id = questionPayload.answerId6;
+            }
+            ans.Index__c = 'f';
+            ans.Answer__c = questionPayload.answerName6;
+            ans.isTrue__c = questionPayload.isTrue6 == null ? false : questionPayload.isTrue6;
+            ans.Quiz_Question__c = ques.Id;
+            ansList.add(ans);
+        }
+        else{
+            Quiz_Answer__c ans = new Quiz_Answer__c();
+            if(questionPayload.answerId6 != null && questionPayload.answerId6 != ''){
+                ans.Id = questionPayload.answerId6;
+                delete ans;
+            }
+        }
+
+        upsert ansList;
     }
 
     @AuraEnabled

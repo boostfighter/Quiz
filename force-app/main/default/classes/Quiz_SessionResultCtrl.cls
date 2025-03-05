@@ -101,7 +101,7 @@ public without sharing class Quiz_SessionResultCtrl {
         wResult.sessionTime = String.valueof(sessionRec.Session_Time_Minutes__c);
         wResult.isPublished = sessionRec.isResultPublished__c;
 
-        sessionUserList = [SELECT Id,Full_Name__c,Email__c FROM Quiz_User__c WHERE Quiz_Session__c =: sessionId];
+        sessionUserList = [SELECT Id,Full_Name__c,Email__c,Total_Tab_Switched__c FROM Quiz_User__c WHERE Quiz_Session__c =: sessionId];
         sessionResultList = [SELECT Id,JSON_Result__c,Quiz_User__c FROM Quiz_Result__c WHERE Quiz_Session__c =: sessionId];
         sessionQuestionList = [SELECT Id FROM Quiz_Question__c WHERE Quiz_Assessment_Name__c =: sessionRec.Quiz_Assessment_Name__c];
         sessionTotalQuestion = sessionQuestionList.size();
@@ -114,6 +114,7 @@ public without sharing class Quiz_SessionResultCtrl {
             ws.studentId = qUser.Id;
             ws.position = String.valueof(indexCount);
             ws.studentName = qUser.Full_Name__c;
+            ws.totalTabSwitch = String.valueof(qUser.Total_Tab_Switched__c);
             ws.studentEmail = qUser.Email__c;
             ws.studentCorrectAnswer = '0';
             ws.studentResulPercentage = '0%';
@@ -162,6 +163,7 @@ public without sharing class Quiz_SessionResultCtrl {
         @AuraEnabled public String studentId='';
         @AuraEnabled public String position='';
 		@AuraEnabled public String studentName='';
+        @AuraEnabled public String totalTabSwitch='';
         @AuraEnabled public String studentEmail='';
         @AuraEnabled public String studentCorrectAnswer='';
         @AuraEnabled public String studentResulPercentage='';

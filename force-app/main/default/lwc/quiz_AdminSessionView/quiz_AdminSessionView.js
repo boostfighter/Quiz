@@ -18,7 +18,7 @@ export default class Quiz_AdminSessionView extends LightningElement {
     timerId;
     timeLeft = 0;
     joineeDetailsIntervalId;
-    @track joineedata = [{userId: '', index: '', userFullName: '', userEmail: ''}];
+    @track joineedata = [{userId: '', index: '', userFullName: '', userEmail: '', userTabChange: ''}];
     isLoading = false;
 
     get formattedTime() {

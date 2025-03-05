@@ -56,13 +56,16 @@ public without sharing class Quiz_AdminSessionViewCtrl {
         Integer indexCount = 1;
         List<wrapperJoinee> joineeList = new List<wrapperJoinee>();
         List<Quiz_User__c> userList = new List<Quiz_User__c>();
-        userList = [SELECT Id,Full_Name__c,Email__c FROM Quiz_User__c WHERE Quiz_Session__c=:sessionId ORDER BY CreatedDate ASC];
+        userList = [SELECT Id,Full_Name__c,Email__c,Total_Tab_Switched__c,Another_Tab_Open__c FROM Quiz_User__c WHERE Quiz_Session__c=:sessionId ORDER BY CreatedDate ASC];
         for(Quiz_User__c userRec:userList){
             wrapperJoinee joinee = new wrapperJoinee();
             joinee.userId = userRec.Id;
             joinee.userFullName = userRec.Full_Name__c;
             joinee.userEmail = userRec.Email__c;
             joinee.index = String.valueof(indexCount);
+            joinee.userTabChange = String.valueof(userRec.Total_Tab_Switched__c);
+            joinee.anotherTabOpen = userRec.Another_Tab_Open__c == true ? 'true' : 'false';
+            joinee.tabStyleCss = userRec.Another_Tab_Open__c == true ? 'highlighted-row':'';
             joineeList.add(joinee);
             indexCount = indexCount+1;
         }
@@ -73,5 +76,8 @@ public without sharing class Quiz_AdminSessionViewCtrl {
         @AuraEnabled public String index='0';
 		@AuraEnabled public String userFullName='';
 		@AuraEnabled public String userEmail='';
+        @AuraEnabled public String userTabChange='0';
+        @AuraEnabled public String anotherTabOpen='false';
+        @AuraEnabled public String tabStyleCss='';
 	}
 }

@@ -30,6 +30,16 @@ public without sharing class Quiz_SessionJoinPageCtrl {
     }
 
     @AuraEnabled
+    public static String updateUserActivity(String userId, Boolean inAnotherTab){
+        Quiz_User__c userRec = new Quiz_User__c();
+        userRec = [Select Id,Total_Tab_Switched__c,Another_Tab_Open__c From Quiz_User__c Where Id =: userId Limit 1];
+        userRec.Total_Tab_Switched__c = inAnotherTab == true ? userRec.Total_Tab_Switched__c + 1 : userRec.Total_Tab_Switched__c;
+        userRec.Another_Tab_Open__c = inAnotherTab;
+        update userRec;
+        return string.valueOf(userRec.Total_Tab_Switched__c);
+    }
+
+    @AuraEnabled
 	public static WrapperResult checkQuizResult(String quizCode){
         WrapperResult wResult = new WrapperResult();
         String errorMessage = '';

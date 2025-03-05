@@ -45,11 +45,26 @@
 
         <template lwc:if={quizStartFlag}>
             <lightning-layout multiple-rows class="slds-p-around_medium">
+                <!-- Question Navigation Circles -->
+                <!-- <lightning-layout-item size="12">
+                    <lightning-card>
+                        <div class="slds-m-bottom_medium slds-text-align_center">
+                            <template for:each={allQuestions} for:item="ques">
+                                <button key={ques.quesId} 
+                                        class={ques.pillClass}
+                                        data-id={ques.quesId} 
+                                        onclick={navigateToQuestion}>
+                                    {ques.questionIndex}
+                                </button>
+                            </template>
+                        </div>
+                    </lightning-card>
+                </lightning-layout-item> -->
                 <lightning-layout-item size="12">
                     <lightning-card>
                         <!-- Question Section -->
                         <div class="slds-p-horizontal_medium slds-p-vertical_small">
-                            <p class="question-text">
+                            <p class="question-text" style="user-select: none;">
                                 <b>Q{currentquestionpayload.questionIndex}: </b>
                                 {currentquestionpayload.questionName}
                             </p>
@@ -63,7 +78,7 @@
                                         <div class="answer-option slds-box slds-p-around_small slds-grid slds-align-items-center">
                                             <!-- Answer Text -->
                                             <div class="slds-col slds-size_10-of-12">
-                                                <p class="answer-text">{data.answerName}</p>
+                                                <p class="answer-text" style="user-select: none;">{data.answerName}</p>
                                             </div>
                                             <!-- Input Selection (Checkbox / Radio) -->
                                             <div class="slds-col slds-size_2-of-12 slds-text-align_right">
@@ -110,7 +125,7 @@
     </template>    
 
     <template lwc:if={examCompletedFlag}>
-        <div style="color: rgb(108, 12, 217); font-size: 22px; text-align: center"><b>!!!Successfully Submitted!!!<br/> Contact your host to know result </b></div>
+        <div style="color: rgb(108, 12, 217); font-size: 22px; text-align: center"><b>!!!Successfully Submitted!!!<br/> Your result is: {studentResulPercentage} </b></div>
     </template>
 
     <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>

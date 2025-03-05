@@ -20,8 +20,9 @@ export default class Quiz_LandingPage extends LightningElement {
         else{
             this.landingPageFlag = true;
         }
-    }
 
+    }
+    
     adminClick(){
         this.landingPageFlag = false;
         this.adminFlag = true;

@@ -24,3 +24,32 @@
 .input-checkbox, .input-radio {
     transform: scale(1.2);
 }
+
+.unattempted-pill {
+    background-color: #d9dbde; /* Light Gray */
+    color: #000;
+}
+
+.attempted-pill {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.review-pill {
+    background-color: #d3ef46; /* Green */
+    color: #000;
+}
+
+.question-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    margin: 5px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out !important;
+}
