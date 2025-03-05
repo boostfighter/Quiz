@@ -76,7 +76,7 @@ After Deploy via **VS Code**:
 3. Go to System Admin profile and give all related apex class access
 4. Enable Digital Experiences if not enabled.
 5. create a guest site 
-	a. go to "All Sites" and click on new.
+	a. Go to "All Sites" and click on new.
 	b. select "Build Your Own(LWR)"
 	c. click on "Get Started"
 	d. put site name(Quiz Application) and click on create
@@ -88,7 +88,7 @@ After Deploy via **VS Code**:
 After installation via **installation URL**:
 1. Enable Digital Experiences if not enabled.
 2. create a guest site 
-	a. go to "all site" and click on new.
+	a. Go to "All Sites" and click on new.
 	b. select "Build Your Own(LWR)"
 	c. click on "Get Started"
 	d. put site name(Quiz Application) and click on create
