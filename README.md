@@ -47,6 +47,20 @@ xml--->
 	<types>
 		<members>Quiz_Application</members>
 		<name>FlexiPage</name>
+		<members>Quiz_UtilityBar</members>
+	</types>
+	<types>
+		<members>quiz_AdminAssessmentView</members>
+		<members>quiz_AdminDashboard</members>
+		<members>quiz_AdminSessionResultView</members>
+		<members>quiz_AdminSessionView</members>
+		<members>quiz_LandingPage</members>
+		<members>quiz_LoginPage</members>
+		<members>quiz_SessionJoinPage</members>
+		<members>quiz_SessionQuizPage</members>
+		<members>quiz_Spinner</members>
+		<members>quiz_NavBar</members>
+		<name>LightningComponentBundle</name>
 	</types>
 	<types>
 		<members>companyLogo</members>
