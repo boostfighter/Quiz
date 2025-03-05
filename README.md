@@ -62,7 +62,7 @@ xml--->
 ## Configure Your Salesforce DX Project
 after installation:
 1. Enable Digital Experiences if not enabled.
-2. create a guest site
+2. create a guest site 
 	a. go to "all site" and click on new.
 	b. select "Build Your Own(LWR)"
 	c. click on "Get Started"
