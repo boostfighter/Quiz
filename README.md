@@ -60,6 +60,7 @@ xml--->
 		<members>quiz_SessionQuizPage</members>
 		<members>quiz_Spinner</members>
 		<members>quiz_NavBar</members>
+		<members>quiz_StudentResultView</members>
 		<name>LightningComponentBundle</name>
 	</types>
 	<types>
