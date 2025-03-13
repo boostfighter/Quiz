@@ -1,0 +1,36 @@
+<template>
+    <template lwc:if={landingPageFlag}>
+        <!--Nav bar start-->
+        <c-quiz_-nav-bar backbutton={backbuttonFlag} homebutton={homebuttonFlag} logoutbutton={logoutbuttonFlag}></c-quiz_-nav-bar>
+        <!--Nav bar end-->
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="3" padding="around-small">
+            </lightning-layout-item>
+                <lightning-layout-item size="3" padding="around-small">
+                <a onclick={adminClick}>
+                    <lightning-card  title="Mentor">
+                        <p class="slds-p-horizontal_small">Click to Create / Manage Quiz</p>
+                    </lightning-card>
+                </a>
+            </lightning-layout-item>
+            <lightning-layout-item size="3" padding="around-small">
+                <a onclick={learnerClick}>
+                    <lightning-card  title="Candidate">
+                        <p class="slds-p-horizontal_small">Click to Join Quiz / See Result</p>
+                    </lightning-card>
+                </a>
+            </lightning-layout-item>
+            <lightning-layout-item size="3" padding="around-small">
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+        
+    <template lwc:if={adminFlag}>
+        <c-quiz_-login-page></c-quiz_-login-page>
+    </template>
+
+    <template lwc:if={learnerFlag}>
+        <c-quiz_-session-join-page></c-quiz_-session-join-page>
+    </template>
+
+</template>

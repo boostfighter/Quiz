@@ -1,0 +1,156 @@
+<template>
+    <template lwc:if={error}><div style="color: red; font-size: 22px;"><b>Error: {error}</b></div></template>
+    <template lwc:if={adminResultViewFlag}>
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="12" padding="around-small">
+                <lightning-card  title={userpayload.greetUser}>
+                    <p style="padding-left: 17px; font-size: 16px;"><b>Assessment Name: {assessmentpayload.assessmentName}</b></p>
+                    <p style="padding-left: 17px; font-size: 10px;"><b>Session Name: {sessionresultpayload.sessionName}</b></p>
+                    <p style="padding-left: 17px; font-size: 10px;"><b>Session Code: {sessionresultpayload.quizCode}</b></p>
+                    <p style="padding-left: 17px; font-size: 10px;"><b>Session Status: {sessionresultpayload.sessionStatus}</b></p>
+                    <p style="padding-left: 17px; font-size: 10px;"><b>Total Question: {assessmentpayload.totalQuestion}</b></p>
+                    <p style="padding-left: 17px; font-size: 10px;"><b>Total Time: {sessionresultpayload.sessionTime}</b></p>
+                    <!--<div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="3" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                    <p style="font-size: 20px">Assessment Name: {assessmentpayload.assessmentName}</p>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="3" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                    <p style="font-size: 20px">Total Question: {assessmentpayload.totalQuestion}</p>                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="3" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                    <p style="font-size: 20px">Total Student: {sessionpayload.totalStudent}</p>                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>-->
+                    <!-- <template lwc:if={studenthideflag}>
+                        <div slot="actions" class="slds-grid slds-grid_align-end">
+                            <lightning-button label="Publish Result" variant="brand" disabled={isPublished} onclick={clickPublishResult}></lightning-button>
+                        </div>
+                    </template> -->
+                </lightning-card>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" padding="around-small">
+                <lightning-card  title="Result Details:">
+                    <div class="slds-box slds-theme–default">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                                <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        S.no
+                                    </th>
+                                    <th class="" scope="col">
+                                        Name
+                                    </th>
+                                    <th class="" scope="col">
+                                        Email
+                                    </th>
+                                    <th class="" scope="col">
+                                        Correct Answer
+                                    </th>
+                                    <th class="" scope="col">
+                                        Percentage
+                                    </th>
+                                    <template if:false={anonymousUserFlag}>
+                                        <th class="" scope="col">
+                                            Tab Switch
+                                        </th>
+                                    </template>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={sessionresultpayload.studentList} for:item="item">
+                                    <tr class="slds-hint-parent" key={item.studentId}>
+                                        <td data-label="indexNo">
+                                            <div class="slds-cell-wrap">{item.position}</div>
+                                        </td>
+                                        <td data-label="Name">
+                                            <a><div class="slds-cell-wrap" data-studentid={item.studentId} onclick={studentNameClick}>{item.studentName}</div></a>
+                                        </td>
+                                        <td data-label= "Email">
+                                            <div class="slds-cell-wrap">{item.studentEmail}</div>
+                                        </td>
+                                        <td data-label="CurrectAnswer">
+                                            <div class="slds-cell-wrap">{item.studentCorrectAnswer}</div>
+                                        </td>
+                                        <td data-label= "Percentage">
+                                            <div class="slds-cell-wrap">{item.studentResulPercentage}</div>
+                                        </td>
+                                        <template if:false={anonymousUserFlag}>
+                                            <td data-label= "TabSwitch">
+                                                <div class="slds-cell-wrap">{item.totalTabSwitch}</div>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </lightning-card>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+
+    <!-- modal start(Select Result Details ) -->
+    <template if:true={selectStudentResultFlag}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBoxSelectResultDetails}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">{selectStudentPayload.studentName} Answer Details:</h2>
+            </header>
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                <lightning-card >
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" padding="around-small">
+                            <template for:each={selectStudentPayload.questionList} for:item="item">
+                                <lightning-card key={item.quesId}>
+                                    <p style="padding-left: 17px; font-size: 16px;"><b>Q{item.questionIndex}: </b>{item.questionName}</p>
+                                    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                                        <lightning-layout multiple-rows>
+                                            <template for:each={item.answerList} for:item="data">
+                                                <lightning-layout-item size="12" padding="around-small" key={data.answerId}>
+                                                    <div class={data.className}>
+                                                        <div class="custom-box slds-box slds-p-around_small">
+                                                            <div style="width: 90%; display: inline-block; font-size: 15px;"><b>{data.answerIndex}. </b>{data.answerName}</div>
+                                                            <div style="width: 10%; display: inline-block; padding-left: 10px;"><lightning-input type="checkbox" disabled=true checked={data.isTrue} label="" name="anscheck1"></lightning-input></div>
+                                                        </div>
+                                                    </div>
+                                                </lightning-layout-item>
+                                            </template>
+                                        </lightning-layout>
+                                    </div>
+                                </lightning-card>
+                                <div key={item.quesId}>
+                                    <br/>
+                                </div>
+                            </template>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-card>
+            </div>
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={hideModalBoxSelectResultDetails}>Close</button>
+            </footer>
+            <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+
+    <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+</template>

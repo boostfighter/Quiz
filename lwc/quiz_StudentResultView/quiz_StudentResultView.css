@@ -1,0 +1,7 @@
+.right-answer {
+    background-color: rgb(132, 222, 132);
+}
+
+.wrong-answer {
+    background-color: rgb(240, 140, 140);
+}

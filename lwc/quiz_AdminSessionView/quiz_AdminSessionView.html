@@ -1,0 +1,83 @@
+<template>
+    <template lwc:if={error}><div style="color: red; font-size: 22px;"><b>Error: {error}</b></div></template>
+    <template lwc:if={adminSessionViewFlag}>
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="12" padding="around-small">
+                <lightning-card  title={userpayload.greetUser}>
+                    <p style="padding-left: 17px; font-size: 16px;"><b>Assessment Name: {assessmentpayload.assessmentName}</b></p>
+                    <p style="padding-left: 17px; font-size: 10px;"><b>Total Question: {assessmentpayload.totalQuestion}</b></p>
+                    <p style="padding-left: 17px; font-size: 10px;"><b>Total Time: {sessionrecdetails.Session_Time_Minutes} Minutes</b></p>
+                    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="4" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                    <p style="font-size: 20px">Join Code: {sessionrecdetails.Session_Join_Code}</p>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                    <lightning-button variant="brand" label="Start Session" title="startsession" disabled={isSessionRunning} onclick={clickToStartSession} class="slds-m-left_x-small"></lightning-button>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                    <lightning-button variant="destructive" disabled={endSessionFlag} label="End Session" title="endsession" onclick={clickToEndSession} class="slds-m-left_x-small"></lightning-button>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <template lwc:if={sessionStartFlag}>
+                            <lightning-layout-item size="12" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_small slds-text-align_center" style="background-color: rgba(250, 250, 250, 0.953);">
+                                    <h2 style="font-size: 24px; font-weight: bold;">Remaining Time: {formattedTime}</h2>
+                                </div>
+                            </lightning-layout-item>
+                        </template>
+                    </div>
+                </lightning-card>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" padding="around-small">
+                <lightning-card  title="Joinee Details:">
+                    <div class="slds-box slds-theme–default">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                                <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        S.no
+                                    </th>
+                                    <th class="" scope="col">
+                                        Name
+                                    </th>
+                                    <th class="" scope="col">
+                                        Email
+                                    </th>
+                                    <th class="" scope="col">
+                                        Tab Change
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={joineedata} for:item="item">
+                                    <tr class="slds-hint-parent" key={item.userId}>
+                                        <td data-label="indexNo">
+                                            <div class="slds-cell-wrap">{item.index}</div>
+                                        </td>
+                                        <td data-label="Name">
+                                            <div class="slds-cell-wrap">{item.userFullName}</div>
+                                        </td>
+                                        <td data-label= "Email">
+                                            <div class="slds-cell-wrap">{item.userEmail}</div>
+                                        </td>
+                                        <td data-label= "Email" class={item.tabStyleCss}>
+                                            <div class="slds-cell-wrap">{item.userTabChange}</div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </lightning-card>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+    <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+</template>
