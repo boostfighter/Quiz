@@ -1,0 +1,56 @@
+<template>
+    <template lwc:if={error}><div style="color: red; font-size: 22px;"><b>Error: {error}</b></div></template>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="6" padding="around-small">
+            <lightning-card title="Quiz Details:"><!--{selectStudentPayload.greetUser}-->
+                <p style="padding-left: 17px; font-size: 16px;"><b>Assessment Name: {selectStudentPayload.assessmentName}</b></p>
+                <p style="padding-left: 17px; font-size: 10px;"><b>Session Name: {selectStudentPayload.sessionName}</b></p>
+                <p style="padding-left: 17px; font-size: 10px;"><b>Total Question: {selectStudentPayload.totalQuestion}</b></p>
+                <p style="padding-left: 17px; font-size: 10px;"><b>Total Time: {selectStudentPayload.sessionTime}</b></p>
+            </lightning-card>
+        </lightning-layout-item>
+        <lightning-layout-item size="6" padding="around-small">
+            <lightning-card title="Result Details:">
+                <p style="padding-left: 17px; font-size: 16px;"><b>Student Name: {selectStudentPayload.studentName}</b></p>
+                <p style="padding-left: 17px; font-size: 10px;"><b>Student Email: {selectStudentPayload.studentEmail}</b></p>
+                <p style="padding-left: 17px; font-size: 10px;"><b>Correct Answer: {selectStudentPayload.correctAnswer}</b></p>
+                <p style="padding-left: 17px; font-size: 10px;"><b>Percentage: {selectStudentPayload.percentage}</b></p>
+                <!-- <div slot="actions" class="slds-grid slds-grid_align-end">
+                    <lightning-button label="Download Result" variant="brand" disabled=true onclick={clickDownloadResult}></lightning-button>
+                </div> -->
+            </lightning-card>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" padding="around-small">
+            <lightning-card title="">
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="12" padding="around-small">
+                        <template for:each={selectStudentPayload.questionList} for:item="item">
+                            <lightning-card key={item.quesId}>
+                                <p style="padding-left: 17px; font-size: 16px;"><b>Q{item.questionIndex}: </b>{item.questionName}</p>
+                                <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                                    <lightning-layout multiple-rows>
+                                        <template for:each={item.answerList} for:item="data">
+                                            <lightning-layout-item size="12" padding="around-small" key={data.answerId}>
+                                                <div class={data.className}>
+                                                    <div class="custom-box slds-box slds-p-around_small">
+                                                            <div style="width: 90%; display: inline-block; font-size: 15px;"><b>{data.answerIndex}. </b>{data.answerName}</div>
+                                                            <div style="width: 10%; display: inline-block; padding-left: 10px;"><lightning-input type="checkbox" disabled=true checked={data.isTrue} label="" name="anscheck1"></lightning-input></div>
+                                                    </div>
+                                                </div>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </lightning-layout>
+                                </div>
+                            </lightning-card>
+                            <div key={item.quesId}>
+                                <br/>
+                            </div>
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-card>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+</template>

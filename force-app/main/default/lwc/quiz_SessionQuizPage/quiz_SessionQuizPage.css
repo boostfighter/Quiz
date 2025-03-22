@@ -1,0 +1,82 @@
+.question-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.answer-option {
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    background: #f7f9fc;
+    border: 1px solid #dfe3e8;
+}
+
+.answer-option:hover {
+    background: #e3e8ee;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.answer-text {
+    font-size: 16px;
+    color: #444;
+}
+
+.input-checkbox, .input-radio {
+    transform: scale(1.2);
+}
+
+.unattempted-pill {
+    background-color: #d9dbde; /* Light Gray */
+    color: #000;
+}
+
+.attempted-pill {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.review-pill {
+    background-color: #d3ef46; /* Green */
+    color: #000;
+}
+
+.question-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    margin: 5px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out !important;
+}
+
+.timer-container {
+    display: flex;
+    justify-content: space-between; /* Ensures left-center-right layout */
+    align-items: center;
+    width: 100%; /* Makes sure it takes the full width */
+    padding: 10px;
+}
+
+.timer-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(108, 121, 240);
+    text-align: center;
+    flex-grow: 1; /* Allows text to remain centered */
+}
+
+.submit-button {
+    margin-left: auto; /* Pushes button to the right */
+}
+
+.input-checkbox,
+.input-radio {
+    pointer-events: none; /* Prevent input from triggering event */
+}
+
+

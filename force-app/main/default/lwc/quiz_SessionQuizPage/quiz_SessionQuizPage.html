@@ -1,0 +1,191 @@
+<template>
+    <template lwc:if={error}><div style="color: red; font-size: 22px;"><b>Error: {error}</b></div></template>
+    <template lwc:if={sessionQuizPageFlag}>
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="12" padding="around-small">
+                <lightning-card  title={sessionpayload.greetStudent}>
+                    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="4" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                    <p style="font-size: 20px">Quiz Name: {sessionpayload.assessmentName}</p>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                    <p style="font-size: 20px">Total Question: {sessionpayload.totalQuestion}</p>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                    <p style="font-size: 20px">Total Time: {sessionpayload.totalTime} Minutes</p>
+                                </div>
+                            </lightning-layout-item>
+                            <template if:false={quizStartFlag}>
+                                <lightning-layout-item size="12" padding="around-small">
+                                    <div class="custom-box slds-box slds-p-around_small slds-text-align_center" style="background-color: rgba(250, 250, 250, 0.953);">
+                                        <p style="font-size: 20px">Please wait, host will start the session soon...</p>
+                                    </div>   
+                                </lightning-layout-item> 
+                            </template>
+                            <!-- <lightning-layout-item size="12" padding="around-small">
+                                <div class="custom-box slds-box slds-p-around_small slds-text-align_center" style="background-color: rgba(250, 250, 250, 0.953);">
+                                    <template lwc:if={quizStartFlag}>
+                                        <h2 style="font-size: 24px; font-weight: bold;">Remaining Time: {formattedTime}</h2>
+                                    </template>
+                                    <template lwc:else>
+                                        <p style="font-size: 20px">Please wait, host will start the session soon...</p>
+                                    </template>
+                                </div>
+                            </lightning-layout-item> -->
+                        </lightning-layout>
+                    </div>
+                </lightning-card>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <template lwc:if={waitingSpinnerFlag}>
+            <lightning-card>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </lightning-card>
+        </template>
+
+        <template lwc:if={quizStartFlag}>
+            <lightning-layout multiple-rows class="slds-p-around_medium">
+                <!-- Question Navigation Circles -->
+                <lightning-layout-item size="12">
+                    <lightning-card>
+                        <div class="slds-m-bottom_medium slds-text-align_center">
+                            <template for:each={allQuestions} for:item="ques">
+                                <button key={ques.questionId} 
+                                        class={ques.pillClass}
+                                        data-id={ques.questionId} 
+                                        data-index={ques.questionIndex} 
+                                        onclick={navigateToQuestion}>
+                                    {ques.questionIndex}
+                                </button>
+                            </template>
+                        </div>
+                    </lightning-card>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <lightning-card>
+                        <!-- <template lwc:if={quizStartFlag}>
+                            <p style="font-size: 20px; font-weight: bold; text-align: center; color: rgb(108, 121, 240);">Remaining Time: {formattedTime}</p>
+                        </template> -->
+                        <template lwc:if={quizStartFlag}>
+                            <div class="timer-container">
+                                <p class="timer-text">Remaining Time: {formattedTime}</p>
+                                <lightning-button 
+                                    variant="brand" 
+                                    label="Final Submit" 
+                                    title="Final Submit" 
+                                    onclick={finalSubmit} 
+                                    class="submit-button">
+                                </lightning-button>
+                            </div>
+                        </template>                                                
+                        <template lwc:if={endQuestionFlag}>
+                            <!-- Question Section -->
+                            <div class="slds-p-horizontal_medium slds-p-vertical_small">
+                                <p class="question-text" style="user-select: none;">
+                                    <b>Q{currentquestionpayload.questionIndex}: </b>
+                                    {currentquestionpayload.questionName}
+                                </p>
+                            </div>
+            
+                            <!-- Answer Choices -->
+                            <div class="slds-box slds-p-around_none slds-m-top_small slds-m-bottom_medium">
+                                <lightning-layout multiple-rows>
+                                    <template for:each={currentquestionpayload.answerList} for:item="data">
+                                        <lightning-layout-item size="12" key={data.answerId} class="slds-p-around_x-small">
+                                            <div data-aid={data.answerId} data-qid={currentquestionpayload.quesId} onclick={ansChangeDiv} class="answer-option slds-box slds-p-around_small slds-grid slds-align-items-center">
+                                                <!-- Answer Text -->
+                                                <div class="slds-col slds-size_10-of-12">
+                                                    <p class="answer-text" style="user-select: none;">{data.answerName}</p>
+                                                </div>
+                                                <!-- Input Selection (Checkbox / Radio) -->
+                                                <div class="slds-col slds-size_2-of-12 slds-text-align_right">
+                                                    <template lwc:if={currentquestionpayload.isMultiAnswer}>
+                                                        <lightning-input 
+                                                            data-id={data.answerId} 
+                                                            type="checkbox" 
+                                                            name={currentquestionpayload.quesId} 
+                                                            class="input-checkbox"
+                                                            checked={data.isSelected}
+                                                            >
+                                                        </lightning-input>
+                                                    </template>
+                                                    <template lwc:else>
+                                                        <lightning-input 
+                                                            data-id={data.answerId} 
+                                                            type="radio" 
+                                                            name={currentquestionpayload.quesId} 
+                                                            value={data.answerId} 
+                                                            class="input-radio"
+                                                            checked={data.isSelected}
+                                                            >
+                                                        </lightning-input>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
+                                </lightning-layout>
+                            </div>
+
+                            <div slot="footer" class="slds-p-around_medium slds-grid slds-align-spread slds-align-center">
+                                <!-- Left Side: Mark as Review Checkbox -->
+                                <b><div class="slds-col slds-text-align_left">
+                                    <lightning-input 
+                                        type="checkbox"
+                                        label="Mark as Review"
+                                        checked={currentquestionpayload.markForReview}
+                                        onchange={handleMarkAsReview}>
+                                    </lightning-input>
+                                </div></b>
+                                <!-- Right Side: Save & Next Button -->
+                                <div class="slds-col slds-text-align_right">
+                                    <lightning-button 
+                                        variant="brand" 
+                                        label={nextButtonLabel} 
+                                        title="Next" 
+                                        onclick={nextClick}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                            
+
+                            <!-- Mark as Review Checkbox -->
+                            <!-- <b><div slot="footer" class="slds-p-around_medium slds-text-align_left">
+                                <lightning-input 
+                                    type="checkbox"
+                                    label="Mark as Review"
+                                    checked={currentquestionpayload.markForReview}
+                                    onchange={handleMarkAsReview}>
+                                </lightning-input>
+                            </div></b> -->
+            
+                            <!-- Footer with Submit/Next Button -->
+                            <!-- <div slot="footer" class="slds-p-around_medium slds-text-align_right">
+                                <lightning-button 
+                                    variant="brand" 
+                                    label={nextButtonLabel} 
+                                    title="Next" 
+                                    onclick={nextClick}>
+                                </lightning-button>
+                            </div> -->
+
+                        </template>
+                    </lightning-card>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+    </template>    
+
+    <template lwc:if={examCompletedFlag}>
+        <div style="color: rgb(108, 12, 217); font-size: 22px; text-align: center"><b>!!!Successfully Submitted!!!<br/> Your result is: {studentResulPercentage} </b></div>
+    </template>
+
+    <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+</template>

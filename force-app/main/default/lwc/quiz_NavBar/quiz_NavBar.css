@@ -1,0 +1,44 @@
+.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f3f3f3;
+    padding: 0 15px; /* Adjust padding around the navbar */
+    border-bottom: 1px solid #ddd;
+    height: 40px;
+    border-radius: 8px;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Ensures alignment to the left */
+    margin: 0; /* Removes any extra margins */
+    padding: 0; /* Ensures no padding around the section */
+    width: 20%; /* Keeps consistent width with right section */
+}
+
+.center-section {
+    display: flex;
+    justify-content: center; /* Keeps the logo centered */
+    align-items: center;
+    flex-grow: 1;
+}
+
+.right-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Aligns icons to the right */
+    width: 20%; /* Matches the left section width */
+}
+
+.icon-button {
+    --slds-c-button-icon-color: #333;
+    --slds-c-button-icon-size: small;
+    margin-left: 10px; /* Adds spacing between Home and Logout icons */
+}
+
+.logo {
+    height: 30px; /* Adjust logo height */
+    max-width: 150px; /* Ensures logo doesn't stretch */
+}

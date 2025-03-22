@@ -1,0 +1,70 @@
+<template>
+
+    <!--Nav bar start-->
+    <c-quiz_-nav-bar onnavigate={navEvent} backbutton={backbuttonFlag} homebutton={homebuttonFlag} logoutbutton={logoutbuttonFlag}></c-quiz_-nav-bar>
+    <!--Nav bar end-->
+    
+
+    <div>
+        <template lwc:if={adminDashboardFlag}>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" padding="around-small">
+                    <lightning-card  title={userpayload.greetUser}>
+                        <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
+                                        <lightning-button variant="brand" label="Create Quiz" title="createquiz" onclick={createQuizClick} class="slds-m-left_x-small"></lightning-button>
+                                    </div>
+                                </lightning-layout-item>
+                                <template for:each={assessmentpayload.wadList} for:item="wad">
+                                    <lightning-layout-item size="3" padding="around-small" key={wad.assessmentId}>
+                                        <a><b><div onclick={clickAssessment} data-assess-id={wad.assessmentId} class="custom-box slds-box slds-p-around_medium slds-text-align_center">{wad.assessmentName}</div></b></a>
+                                    </lightning-layout-item>
+                                </template>
+                            </lightning-layout>
+                        </div>
+                    </lightning-card>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+    </div>
+
+    <template lwc:if={adminAssessmentViewFlag}>
+        <c-quiz_-admin-assessment-view userpayload={userpayload} assessmentid={selectedAssessmentId}></c-quiz_-admin-assessment-view>
+    </template>
+
+    <!-- modal start -->      
+    <template if:true={isShowModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create Quiz</h2>
+            </header>
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <p class="slds-p-horizontal_small">
+                    <lightning-input type="text" label="" placeholder="Enter Assessment Name" onchange={assessmentChange}></lightning-input>
+                </p>
+            </div>
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={createAssessmentClick}>Create</button>
+            </footer>
+            <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+
+    <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
+</template>

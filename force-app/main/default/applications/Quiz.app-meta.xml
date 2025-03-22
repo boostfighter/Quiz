@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>Quiz</label>
+    <navType>Standard</navType>
+    <tabs>Quiz_Application</tabs>
+    <tabs>Quiz_Admin_User__c</tabs>
+    <tabs>Quiz_User__c</tabs>
+    <tabs>Quiz_Assessment_Name__c</tabs>
+    <tabs>Quiz_Question__c</tabs>
+    <tabs>Quiz_Answer__c</tabs>
+    <tabs>Quiz_Session__c</tabs>
+    <tabs>Quiz_Result__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>Quiz_UtilityBar</utilityBar>
+</CustomApplication>

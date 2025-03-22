@@ -1,0 +1,26 @@
+<template>
+    <div class="nav-bar">
+        <!-- Back Button -->
+        <div class="left-section">
+            <template if:true={backbutton}>
+                <lightning-button-icon icon-name="utility:back" alternative-text="Back" onclick={handleBack} class="icon-button"></lightning-button-icon>
+            </template>
+        </div>
+
+        <!-- Center Section (Company Logo) -->
+        <div class="center-section">
+            <img src={companyLogo} alt="Company Logo" class="logo" />
+        </div>
+
+        <div class="right-section">
+            <template if:true={homebutton}>
+                <!-- Home Button -->
+                <lightning-button-icon icon-name="utility:home" alternative-text="Home" onclick={handleHome} class="icon-button"></lightning-button-icon>
+            </template>
+            <template if:true={logoutbutton}>
+                <!-- Logout Button -->
+                <lightning-button-icon icon-name="utility:logout" alternative-text="Logout" onclick={handleLogout} class="icon-button"></lightning-button-icon>
+            </template>
+        </div>
+    </div>
+</template>
