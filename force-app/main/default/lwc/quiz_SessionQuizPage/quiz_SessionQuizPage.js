@@ -243,6 +243,7 @@ export default class Quiz_SessionQuizPage extends LightningElement {
 
     navigateToQuestion(event){
         this.endQuestionFlag = true;
+        this.isPaused = true;
         this.selectedQuestionIndex = event.target.dataset.index;
         this.selectedQuestionId = event.target.dataset.id;
         console.log('this.selectedQuestionIndex-->'+this.selectedQuestionIndex+'  --this.selectedQuestionId-->'+this.selectedQuestionId);
