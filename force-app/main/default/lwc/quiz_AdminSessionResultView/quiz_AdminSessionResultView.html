@@ -2,6 +2,7 @@
     <template lwc:if={error}><div style="color: red; font-size: 22px;"><b>Error: {error}</b></div></template>
     <template lwc:if={adminResultViewFlag}>
         <lightning-layout multiple-rows>
+
             <lightning-layout-item size="12" padding="around-small">
                 <lightning-card  title={userpayload.greetUser}>
                     <p style="padding-left: 17px; font-size: 16px;"><b>Assessment Name: {assessmentpayload.assessmentName}</b></p>
@@ -10,31 +11,22 @@
                     <p style="padding-left: 17px; font-size: 10px;"><b>Session Status: {sessionresultpayload.sessionStatus}</b></p>
                     <p style="padding-left: 17px; font-size: 10px;"><b>Total Question: {assessmentpayload.totalQuestion}</b></p>
                     <p style="padding-left: 17px; font-size: 10px;"><b>Total Time: {sessionresultpayload.sessionTime}</b></p>
-                    <!--<div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
-                        <lightning-layout multiple-rows>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
-                                    <p style="font-size: 20px">Assessment Name: {assessmentpayload.assessmentName}</p>
-                                </div>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
-                                    <p style="font-size: 20px">Total Question: {assessmentpayload.totalQuestion}</p>                                </div>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="custom-box slds-box slds-p-around_medium slds-text-align_center" style="background-color: rgba(255, 255, 128, .5);">
-                                    <p style="font-size: 20px">Total Student: {sessionpayload.totalStudent}</p>                                </div>
-                            </lightning-layout-item>
-                        </lightning-layout>
-                    </div>-->
-                    <!-- <template lwc:if={studenthideflag}>
-                        <div slot="actions" class="slds-grid slds-grid_align-end">
-                            <lightning-button label="Publish Result" variant="brand" disabled={isPublished} onclick={clickPublishResult}></lightning-button>
-                        </div>
-                    </template> -->
                 </lightning-card>
             </lightning-layout-item>
+
             <lightning-layout-item size="12" padding="around-small">
+
+                <lightning-card>
+                    <lightning-tabset active-tab-value="tab1">
+                        <lightning-tab label="Result Details:" value="tab1">
+                            Content for Tab 1 goes here
+                        </lightning-tab>
+                        <lightning-tab label="Question Wise Report" value="tab2">
+                            Content for Tab 2 goes here
+                        </lightning-tab>
+                    </lightning-tabset>
+                </lightning-card>
+
                 <lightning-card  title="Result Details:">
                     <div class="slds-box slds-theme–default">
                         <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
@@ -92,6 +84,7 @@
                     </div>
                 </lightning-card>
             </lightning-layout-item>
+
         </lightning-layout>
     </template>
 

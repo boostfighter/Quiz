@@ -61,6 +61,8 @@ xml--->
 		<members>quiz_Spinner</members>
 		<members>quiz_NavBar</members>
 		<members>quiz_StudentResultView</members>
+		<members>quiz_AdminResultDetails</members>
+		<members>quiz_AdminQuestionWiseReport</members>
 		<name>LightningComponentBundle</name>
 	</types>
 	<types>
