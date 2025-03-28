@@ -1,3 +1,37 @@
 <template>
+    <template lwc:if={error}><div style="color: red; font-size: 22px;"><b>Error: {error}</b></div></template>
     
+    <!-- excelTable.html -->
+    <div class="table-container">
+        <table class="excel-table">
+            <thead>
+                <tr>
+                    <th style="background-color: #a1c6f4;">#No</th>
+                    <th style="background-color: #a1c6f4;">Question</th>
+                    <th style="background-color: #a1c6f4;">Correct Answer</th>
+                    <template for:each={userNameList} for:item="col">
+                        <th key={col.userId}>
+                            {col.userFullName}
+                        </th>
+                    </template>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={questionWiseReportData} for:item="row">
+                    <tr key={row.questionId}>
+                        <td>{row.questionIndex}</td>
+                        <td>{row.questionName}</td>
+                        <td>{row.correctAnswerNameCombine}</td>
+                        <template for:each={row.candidateDetails} for:item="nestedrow">
+                            <td key={nestedrow.userId}>
+                                {nestedrow.selectedAnswerNameCombine}
+                            </td>
+                        </template>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <c-quiz_-spinner is-loading={isLoading}></c-quiz_-spinner>
 </template>
