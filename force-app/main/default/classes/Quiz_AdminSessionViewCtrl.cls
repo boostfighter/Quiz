@@ -106,10 +106,10 @@ public without sharing class Quiz_AdminSessionViewCtrl {
         for(Quiz_Answer__c answer : relatedAnswerListMap.values()){
             if(answer.isTrue__c){
                 if (!quizIdCorrectAnswerMap.containsKey(answer.Quiz_Question__c)){
-                    quizIdCorrectAnswerMap.put(answer.Quiz_Question__c, answer.Answer__c);
+                    quizIdCorrectAnswerMap.put(answer.Quiz_Question__c, ' ◉ '+answer.Answer__c);
                 }
                 else{
-                    quizIdCorrectAnswerMap.put(answer.Quiz_Question__c, quizIdCorrectAnswerMap.get(answer.Quiz_Question__c) + ';' + answer.Answer__c);
+                    quizIdCorrectAnswerMap.put(answer.Quiz_Question__c, quizIdCorrectAnswerMap.get(answer.Quiz_Question__c) + '\n ◉ ' + answer.Answer__c);
                 }
             }
         }
@@ -123,8 +123,10 @@ public without sharing class Quiz_AdminSessionViewCtrl {
                 Boolean trueFlag  = false;
                 for(Quiz_SessionResultCtrl.WrapperAnswer wAns : wrapObj.answerList){
                     if(wAns.isSelected){
-                        selectedAnswerNameCombine = selectedAnswerNameCombine + relatedAnswerListMap.get(wAns.answerId).Answer__c + ';'; 
+                        selectedAnswerNameCombine = selectedAnswerNameCombine + ' ◉ ' + relatedAnswerListMap.get(wAns.answerId).Answer__c + '\n'; 
                     }
+                }
+                for(Quiz_SessionResultCtrl.WrapperAnswer wAns : wrapObj.answerList){
                     if(wAns.isTrue == true){
                         if(wAns.isSelected == false){
                             trueFlag = false;
@@ -148,6 +150,7 @@ public without sharing class Quiz_AdminSessionViewCtrl {
                 wrapCandidate.userFullName = qr.Quiz_User__r.Full_Name__c;
                 wrapCandidate.selectedAnswerNameCombine = selectedAnswerNameCombine;
                 wrapCandidate.isCorrect = trueFlag == true ? 'true' : 'false';
+                wrapCandidate.className = trueFlag == true ? 'right-answer' : 'wrong-answer';
                 UserAndQuizIdAndCandidateResultMap.put(userAndQuesId, wrapCandidate);
             }
         }
@@ -187,6 +190,7 @@ public without sharing class Quiz_AdminSessionViewCtrl {
         @AuraEnabled public String userFullName='';
         @AuraEnabled public String selectedAnswerNameCombine='';
         @AuraEnabled public String isCorrect='';
+        @AuraEnabled public String className='';
     }
 
 
